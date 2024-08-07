@@ -53,7 +53,7 @@ struct Index {
                     .usingPopup(false) // 是否显示弹出框
                     .selectedFont({ size: 16, weight: FontWeight.Bolder }) // 选中项字体样式
                     .popupFont({ size: 30, weight: FontWeight.Bolder }) // 弹出框内容的字体样式
-                    .itemSize(26) // 每一项的尺寸大小
+                    .itemSize(22) // 每一项的尺寸大小
                     .alignStyle(IndexerAlign.Left) //弹出框在索引条右侧弹出
                     .onSelect((index: number) => {
                         console.info(this.value[index] + ' Selected!')
@@ -96,21 +96,13 @@ struct Index {
             }
             return a.index.localeCompare(b.index);
         });
-
-        this.list.forEach(contact => {
-            console.log(`打印：${contact.index}: ${contact.name}`);
-        });
     }
 
     onSelectIndexItem(index:string){
         for (let i=0;i<this.list.length;i++){
             console.log("名字："+this.list[i].name+" index1:"+this.list[i].index+" index2:"+index)
             if (this.list[i].index == index){
-                // this.scroller.scrollTo({
-                //     index: i, // 滚动到索引为4的项（列表项从0开始计数）
-                // });
-
-                this.scroller.scrollToIndex(i)
+                this.scroller.scrollToIndex(i)//滚动到索引位置
                 break ;
             }
         }
