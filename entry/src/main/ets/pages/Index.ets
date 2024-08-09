@@ -1,6 +1,8 @@
 import { contact } from '@kit.ContactsKit'
 import { Contact } from '../model/Contact'
 import { util } from '@kit.ArkTS'
+
+
 import { pinyin } from "pinyin-pro";
 
 @Entry
@@ -19,53 +21,48 @@ struct Index {
     }
 
     build() {
-        Stack({ alignContent: Alignment.Start }) {
-            Row() {
-                List({ space: 0, initialIndex: 0,scroller:this.scroller}) {
-                    ForEach(this.list, (item:Contact,index) => {
-                        ListItem() {
-                            Column(){
-                                if (index==0||this.list[index-1].index != item.index){
-                                    Text(item.index).width('100%').fontColor('#333333').fontSize(14).backgroundColor("#EAEAEA").padding({
-                                        top:5,bottom:5,left:15
-                                    })
-                                }
+        Row() {
+            List({ space: 0, initialIndex: 0,scroller:this.scroller}){
+                ForEach(this.list, (item:Contact,index) => {
+                    ListItem() {
+                        Column(){
+                            if (index==0||this.list[index-1].index != item.index){
+                                Text(item.index).width('100%').fontColor('#333333').fontSize(14).backgroundColor("#EAEAEA").padding({
+                                    top:5,bottom:5,left:15
+                                })
+                            }
 
-                                Text(item.name)
-                                    .fontSize(30)
-                                    .padding({
-                                        top:15,bottom:15,left:15
-                                    })
-                            }.alignItems(HorizontalAlign.Start)
-                        }
-                    }, (item:Contact) => util.generateRandomUUID(true))//key随机生成
-                }.layoutWeight(1).scrollBar(BarState.Off)
-                .height('100%').divider({
-                    color:'#E5E5E5',
-                    strokeWidth:0.5
+                            Text(item.name)
+                                .fontSize(30)
+                                .padding({
+                                    top:15,bottom:15,left:15
+                                })
+                        }.alignItems(HorizontalAlign.Start)
+                    }
+                }, (item:Contact) => util.generateRandomUUID(true))//key随机生成
+            }.layoutWeight(1).scrollBar(BarState.Off)
+            .height('100%').divider({
+                color:'#E5E5E5',
+                strokeWidth:0.5
+            })
+
+            AlphabetIndexer({ arrayValue: this.value, selected: 0})
+                .selectedColor(0xFFFFFF) // 选中项文本颜色
+                .popupColor(0xFFFAF0) // 弹出框文本颜色
+                .selectedBackgroundColor(0xCCCCCC) // 选中项背景颜色
+                .popupBackground(0xD2B48C) // 弹出框背景颜色
+                .usingPopup(false) // 是否显示弹出框
+                .selectedFont({ size: 16, weight: FontWeight.Bolder }) // 选中项字体样式
+                .popupFont({ size: 30, weight: FontWeight.Bolder }) // 弹出框内容的字体样式
+                .itemSize(22) // 每一项的尺寸大小
+                .alignStyle(IndexerAlign.Left) //弹出框在索引条右侧弹出
+                .onSelect((index: number) => {
+                    console.info(this.value[index] + ' Selected!')
+                    this.onSelectIndexItem(this.value[index]);
                 })
-
-                AlphabetIndexer({ arrayValue: this.value, selected: 0})
-                    .selectedColor(0xFFFFFF) // 选中项文本颜色
-                    .popupColor(0xFFFAF0) // 弹出框文本颜色
-                    .selectedBackgroundColor(0xCCCCCC) // 选中项背景颜色
-                    .popupBackground(0xD2B48C) // 弹出框背景颜色
-                    .usingPopup(false) // 是否显示弹出框
-                    .selectedFont({ size: 16, weight: FontWeight.Bolder }) // 选中项字体样式
-                    .popupFont({ size: 30, weight: FontWeight.Bolder }) // 弹出框内容的字体样式
-                    .itemSize(22) // 每一项的尺寸大小
-                    .alignStyle(IndexerAlign.Left) //弹出框在索引条右侧弹出
-                    .onSelect((index: number) => {
-                        console.info(this.value[index] + ' Selected!')
-                        this.onSelectIndexItem(this.value[index]);
-                    })
-                    .onPopupSelect((index: number) => {
-                        console.info('onPopupSelected:' + index)
-                    }).height('80%')
-            }
-            .width('100%')
-            .height('100%')
         }
+        .width('100%')
+        .height('100%')
     }
 
     initData(){
